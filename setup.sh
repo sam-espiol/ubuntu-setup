@@ -75,20 +75,18 @@ gsettings set org.gnome.shell.keybindings show-screenshot-ui "['<Super><Shift>s'
 gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>e']"
 
 echo "=========================================="
-echo "Removing Firefox (Snap & APT)"
+echo "Gỡ bỏ Firefox (Phiên bản Snap & Apt) và Thunderbird"
 echo "=========================================="
-# Remove Snap version (standard on Ubuntu 22.04/24.04+) and APT package
-sudo snap remove firefox 2>/dev/null || true
-sudo apt purge -y firefox firefox-locale-* 2>/dev/null || true
-rm -rf ~/.mozilla ~/.cache/mozilla
+# Gỡ bỏ Thunderbird
+sudo apt remove --purge -y thunderbird*
 
-echo "=========================================="
-echo "Disabling & Clearing File Thumbnails"
-echo "=========================================="
-# Disable thumbnail previews in Nautilus (Files)
-gsettings set org.gnome.nautilus.preferences show-image-thumbnails 'never'
-# Clear existing cached thumbnails
-rm -rf ~/.cache/thumbnails/*
+# Gỡ bỏ Firefox (Bao gồm cả bản Snap mặc định trên Ubuntu và bản Apt)
+sudo snap remove --purge firefox || true
+sudo apt remove --purge -y firefox*
+
+# Dọn dẹp dung lượng và các file cấu hình thừa
+sudo apt autoremove -y
+sudo apt clean
 
 echo "=========================================="
 echo "Downloading Latest Kali Linux Installer ISO"
