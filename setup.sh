@@ -68,6 +68,42 @@ glib-compile-schemas "$EXT_DIR/schemas"
 gnome-extensions enable "$CLIPBOARD_EXT_UUID" || echo "Có thể cần khởi động lại GNOME để extension nhận diện."
 
 echo "=========================================="
+echo "9. Cấu hình shortcut"
+echo "=========================================="
+echo "=========================================="
+gsettings set org.gnome.shell.keybindings show-screenshot-ui "['<Super><Shift>s']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>e']"
+
+echo "=========================================="
+echo "Removing Firefox (Snap & APT)"
+echo "=========================================="
+# Remove Snap version (standard on Ubuntu 22.04/24.04+) and APT package
+sudo snap remove firefox 2>/dev/null || true
+sudo apt purge -y firefox firefox-locale-* 2>/dev/null || true
+rm -rf ~/.mozilla ~/.cache/mozilla
+
+echo "=========================================="
+echo "Disabling & Clearing File Thumbnails"
+echo "=========================================="
+# Disable thumbnail previews in Nautilus (Files)
+gsettings set org.gnome.nautilus.preferences show-image-thumbnails 'never'
+# Clear existing cached thumbnails
+rm -rf ~/.cache/thumbnails/*
+
+echo "=========================================="
+echo "Downloading Latest Kali Linux Installer ISO"
+echo "=========================================="
+# Dynamically fetch the filename for the latest stable installer ISO
+KALI_ISO=$(curl -s https://cdimage.kali.org/current/ | grep -oP 'kali-linux-\d+\.\d+[a-z]?-installer-amd64\.iso' | head -n 1)
+
+if [ -n "$KALI_ISO" ]; then
+    echo "Downloading $KALI_ISO to ~/Downloads..."
+    wget -c "https://cdimage.kali.org/current/$KALI_ISO" -P "$HOME/Downloads"
+else
+    echo "Downloading Kali ISO to ~/Downloads..."
+    wget -c "https://cdimage.kali.org/current/kali-linux-installer-amd64.iso" -O "$HOME/Downloads/kali-linux-installer.iso"
+fi
+
 echo "CÀI ĐẶT HOÀN TẤT TOÀN BỘ!"
 echo "LƯU Ý QUAN TRỌNG:"
 echo "1. Bạn BẮT BUỘC phải KHỞI ĐỘNG LẠI MÁY (Restart) để các quyền của KVM (libvirt) và GNOME Extensions hoạt động chính xác."
