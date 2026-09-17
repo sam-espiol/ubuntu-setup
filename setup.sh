@@ -18,6 +18,7 @@ echo "=========================================="
 echo "3. Cài đặt KVM và các công cụ ảo hoá"
 echo "=========================================="
 sudo apt install -y qemu-system qemu-utils libvirt-daemon-system libvirt-clients bridge-utils virt-manager
+sudo systemctl enable --now libvirtd
 sudo usermod -aG libvirt $USER
 sudo usermod -aG kvm $USER
 
