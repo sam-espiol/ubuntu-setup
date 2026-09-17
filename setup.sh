@@ -17,8 +17,7 @@ sudo apt install -y curl wget gpg apt-transport-https software-properties-common
 echo "=========================================="
 echo "3. Cài đặt KVM và các công cụ ảo hoá"
 echo "=========================================="
-sudo apt install -y qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virt-manager
-# Thêm user hiện tại vào nhóm libvirt và kvm để chạy KVM không cần quyền root
+sudo apt install -y qemu-system qemu-utils libvirt-daemon-system libvirt-clients bridge-utils virt-manager
 sudo usermod -aG libvirt $USER
 sudo usermod -aG kvm $USER
 
